@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Квест · Древняя Греция</title>
+  <meta name="theme-color" content="#1B3A5C">
+  <link rel="stylesheet" href="card-ui.css">
+  <link rel="stylesheet" href="layer/card-back-layer.css">
+  <link rel="stylesheet" href="quest-minigames.css">
+  <style>
+    :root{--qcBg:#f0f2f5;--qcInk:#111;--qcSurface:#fff;--qcBorder:rgba(0,0,0,.10);}
+    :root[data-theme="dark"]{--qcBg:#0f1a2e;--qcInk:#f1f4ff;--qcSurface:#0d1628;--qcBorder:rgba(255,255,255,.12);--qcPrimaryText:#c5dff7;}
+    body{background:var(--qcBg);color:var(--qcInk);}
+    .qc-nav{background:var(--qcSurface);border-bottom:2px solid rgba(200,162,62,.35);color:var(--qcInk);}
+    .qc-main{color:var(--qcInk);}
+    .qc-nav-title,.qc-nav-code{color:var(--qcInk);}
+    .qc-scene-panel,.qc-done{background:var(--qcSurface);border:1px solid var(--qcBorder);color:var(--qcInk);}
+    .qc-done p{color:var(--qcInk);}
+    .qc-nav { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .qc-nav-title { flex: 1; min-width: 0; }
+    .qc-nav-code { flex-shrink: 0; white-space: nowrap; margin-left: auto; }
+  </style>
+</head>
+<body>
+  <header class="qc-nav">
+    <button type="button" class="qc-back" id="backBtn" aria-label="Назад">←</button>
+    <div class="qc-nav-title" id="navTitle">Квест</div>
+    <div class="qc-nav-code" id="navCode"></div>
+  </header>
+
+  <main class="qc-main" id="main"></main>
+
+  <div class="qc-card-overlay" id="qcCardOverlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="qc-card-overlay__backdrop"></div>
+    <div class="qc-card-overlay__stage">
+      <div class="qc-card-flip-wrap">
+        <div class="qc-card-flip" id="qcCardFlip">
+          <div class="qc-card-side qc-card-side--front">
+            <img id="qcCardFace" alt="">
+          </div>
+          <div class="qc-card-side qc-card-side--back" id="qcCardBack"></div>
+        </div>
+        <div class="hs-card-overlay" id="qcHsOverlay">
+          <div class="hs-ov-num"></div>
+          <div class="hs-ov-label"></div>
+          <div class="hs-ov-cardtext"></div>
+          <div class="hs-ov-detail"></div>
+          <div class="hs-ov-hint" id="qcHsHint">нажми — закрыть подсказку</div>
+        </div>
+      </div>
+      <p class="qc-card-overlay__hint" id="qcCardHint"></p>
+    </div>
+  </div>
+
+  <script src="lang.js"></script>
+  <script src="auth.js"></script>
+  <script src="audio-player.js"></script>
+  <script src="deck-loader.js"></script>
+  <script src="quest-dialogue.js"></script>
+  <script src="layer/card-back-layer.js"></script>
+  <script src="card-view.js?v=20260710-hs-pins"></script>
+  <script src="quest-card-overlay.js"></script>
+  <script src="quest-quiz.js"></script>
+  <script src="quest-minigames-interactive.js"></script>
+  <script src="quest-minigames.js"></script>
+  <script src="quest-workshop-utils.js"></script>
+  <script src="quest-chapter.js"></script>
+</body>
+</html>

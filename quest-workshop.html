@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Небесная мастерская · Древняя Греция</title>
+  <meta name="theme-color" content="#1B3A5C">
+  <link rel="stylesheet" href="quest-minigames.css">
+  <style>
+    :root{--qcBg:#f0f2f5;--qcInk:#111;--qcSurface:#fff;--qcBorder:rgba(0,0,0,.10);}
+    :root[data-theme="dark"]{--qcBg:#0f1a2e;--qcInk:#f1f4ff;--qcSurface:#0d1628;--qcBorder:rgba(255,255,255,.12);--qcPrimaryText:#c5dff7;}
+    body{margin:0;background:var(--qcBg);color:var(--qcInk);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;}
+    .ws-nav{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--qcSurface);border-bottom:2px solid rgba(200,162,62,.35);}
+    .ws-back{border:0;background:transparent;font-size:20px;cursor:pointer;color:var(--qcInk);}
+    .ws-nav-title{flex:1;font-weight:800;font-size:15px;}
+    .ws-main{max-width:520px;margin:0 auto;padding:16px 14px 32px;}
+  </style>
+</head>
+<body>
+  <header class="ws-nav">
+    <button type="button" class="ws-back" id="backBtn" aria-label="Назад">←</button>
+    <div class="ws-nav-title" id="navTitle">Небесная мастерская</div>
+  </header>
+  <main class="ws-main" id="main"></main>
+  <script src="lang.js"></script>
+  <script src="auth.js"></script>
+  <script src="deck-loader.js"></script>
+  <script src="quest-workshop-utils.js"></script>
+  <script src="quest-workshop.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Ancient Greece app icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#234a73"/>
+      <stop offset="1" stop-color="#132a44"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0c068"/>
+      <stop offset="1" stop-color="#b88922"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <mask id="rounded">
+      <rect x="0" y="0" width="512" height="512" rx="112" fill="#fff"/>
+    </mask>
+  </defs>
+
+  <g mask="url(#rounded)">
+    <rect x="0" y="0" width="512" height="512" fill="url(#bg)"/>
+
+    <!-- subtle marble noise -->
+    <g opacity="0.08">
+      <path d="M-40 80c120 40 220 20 360-30 120-44 220-40 320-10" fill="none" stroke="#ffffff" stroke-width="22" stroke-linecap="round"/>
+      <path d="M-30 210c140 60 240 30 380-10 130-38 220-20 320 10" fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round"/>
+      <path d="M-60 340c150 40 250 10 390-30 150-45 240-35 340-10" fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round"/>
+    </g>
+
+    <!-- meander-like border (simplified for legibility at small sizes) -->
+    <rect x="34" y="34" width="444" height="444" rx="96" fill="none" stroke="url(#gold)" stroke-width="14" opacity="0.9"/>
+    <rect x="60" y="60" width="392" height="392" rx="76" fill="none" stroke="rgba(200,162,62,0.35)" stroke-width="6"/>
+
+    <!-- parthenon -->
+    <g filter="url(#shadow)" transform="translate(0,2)">
+      <!-- stylobate -->
+      <path d="M120 352h272v28H120z" fill="url(#gold)"/>
+      <path d="M108 380h296v24H108z" fill="#c8a23e" opacity="0.85"/>
+
+      <!-- temple body -->
+      <path d="M148 344V228l108-58 108 58v116H148z" fill="rgba(255,255,255,0.10)" stroke="rgba(200,162,62,0.55)" stroke-width="6" />
+
+      <!-- roof -->
+      <path d="M126 232l130-74 130 74-16 26H142l-16-26z" fill="url(#gold)"/>
+      <path d="M158 262h196v16H158z" fill="rgba(19,42,68,0.55)"/>
+
+      <!-- columns -->
+      <g fill="rgba(255,255,255,0.12)" stroke="rgba(200,162,62,0.55)" stroke-width="4">
+        <rect x="166" y="276" width="18" height="68" rx="6"/>
+        <rect x="204" y="276" width="18" height="68" rx="6"/>
+        <rect x="242" y="276" width="18" height="68" rx="6"/>
+        <rect x="280" y="276" width="18" height="68" rx="6"/>
+        <rect x="318" y="276" width="18" height="68" rx="6"/>
+      </g>
+
+      <!-- doorway -->
+      <path d="M244 300c0-10 8-18 18-18s18 8 18 18v44h-36v-44z" fill="rgba(19,42,68,0.7)" stroke="rgba(200,162,62,0.45)" stroke-width="3"/>
+    </g>
+
+    <!-- highlight dot (brand accent) -->
+    <circle cx="402" cy="122" r="10" fill="#c8a23e" opacity="0.9"/>
+  </g>
+</svg>

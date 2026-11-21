@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Древняя Греция · Карточка</title>
+<meta name="theme-color" content="#1B3A5C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Neucha&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="layer/card-back-layer.css">
+<link rel="stylesheet" href="card-ui.css">
+<style>
+:root{--navy:#1B3A5C;--gold:#C8A23E;--bg:#f0f2f5;--ink:#111;--cardShadow:rgba(0,0,0,.25);}
+:root[data-theme="dark"]{--bg:#0f2347;--ink:#fff;--cardShadow:rgba(0,0,0,.6);}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{margin:0;font-family:system-ui,-apple-system,sans-serif;font-weight:800;color:var(--ink);background:var(--bg);min-height:100dvh;display:flex;flex-direction:column;}
+.nav{background:var(--navy);padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+#sTask .nav,#sResult .nav{border-bottom:2px solid var(--gold);}
+.nav-story{background:rgba(200,162,62,.12);border-bottom:1px solid rgba(200,162,62,.25);padding:10px 14px;font-size:12px;line-height:1.45;font-weight:600;flex-shrink:0;max-height:88px;overflow-y:auto;}
+.nav-story strong{color:var(--gold);font-size:11px;display:block;margin-bottom:2px;}
+.nav-story em{display:block;font-style:normal;opacity:.75;font-size:11px;margin-bottom:4px;}
+.nav-prog-fill{height:100%;background:var(--gold);width:0;transition:width .4s cubic-bezier(.4,0,.2,1);}
+.back-btn{background:none;border:none;color:var(--gold);font-size:22px;cursor:pointer;padding:0 4px;line-height:1;}
+.nav-title{font-size:15px;font-weight:900;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nav-code{font-size:11px;opacity:.55;white-space:nowrap;}
+.screen{display:none;flex:1;flex-direction:column;min-height:0;}
+.screen.active{display:flex;}
+.flip-outer{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px;gap:0;min-height:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;}
+#cardWrap{width:min(88vw, calc((100dvh - 140px) * 0.667));aspect-ratio:2/3;flex-shrink:0;overflow:hidden;border-radius:16px;position:relative;}
+#cardSlide{width:100%;height:100%;will-change:transform;}
+.flip-container{perspective:1100px;width:100%;height:100%;transform-origin:center center;will-change:transform;position:relative;}
+.card-flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);cursor:pointer;pointer-events:none;}
+.card-flip.flipped{transform:rotateY(180deg);}
+.card-side{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden;box-shadow:0 10px 36px var(--cardShadow),0 0 0 2px rgba(200,162,62,.35);}
+.card-side.back{transform:rotateY(180deg);}
+.card-side img{width:100%;height:100%;object-fit:cover;display:block;}
+.card-side.back .gr-card{position:absolute;inset:0;width:100%;height:100%;border-radius:16px;}
+.card-side.back .gr-layer-back{border-radius:16px;}
+#backHtml{position:absolute;inset:0;overflow:hidden;}
+.card-hint{font-size:12px;opacity:.45;padding:10px 0 6px;text-align:center;flex-shrink:0;}
+.try-btn{width:100%;max-width:340px;padding:14px;margin-top:6px;background:#1565C0;color:#fff;font-weight:900;font-size:16px;border:none;border-radius:14px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);}
+.try-btn:active{transform:scale(.97);}
+.try-btn.done-ok{background:#388E3C;}
+.try-btn.done-bad{background:#C62828;}
+.task-wrap{flex:1;display:flex;flex-direction:column;padding:16px;overflow-y:auto;gap:14px;min-height:0;width:100%;max-width:min(88vw,calc((100dvh - 140px) * 0.667));align-self:center;}
+.quiz-q{font-size:17px;line-height:1.55;padding:16px;background:rgba(200,162,62,.1);border:1.5px solid rgba(200,162,62,.25);border-radius:14px;text-align:center;}
+.order-list,.match-grid{display:flex;flex-direction:column;gap:10px;}
+.order-item,.match-btn{padding:13px 15px;border:2px solid rgba(200,162,62,.25);border-radius:13px;background:rgba(27,58,92,.7);color:#fff;font-size:15px;font-weight:700;cursor:pointer;text-align:left;width:100%;}
+.match-grid{flex-direction:row;}
+.match-col{flex:1;display:flex;flex-direction:column;gap:10px;}
+.match-btn.sel{border-color:var(--gold);background:rgba(200,162,62,.15);}
+.result-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center;gap:12px;}
+.result-icon{font-size:72px;line-height:1.1;}
+.result-verdict{font-size:22px;font-weight:900;}
+.result-exp{font-size:14px;opacity:.8;line-height:1.6;max-width:340px;padding:12px 16px;background:rgba(255,255,255,.06);border-radius:12px;}
+.result-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin-top:8px;}
+.btn{display:block;width:100%;padding:14px;border:2px solid var(--gold);border-radius:12px;background:var(--navy);color:#fff;font-size:15px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;}
+.btn.primary{background:var(--gold);color:var(--navy);}
+.card-flip.flipped .card-side.front svg{display:none;}
+.hs-pin{cursor:pointer;pointer-events:all;}
+.hs-pin-bg{fill:rgba(27,58,92,.92);stroke:#C8A23E;stroke-width:4;transition:fill .15s,stroke .15s;}
+.hs-pin-num{fill:#fff;font-size:34px;font-weight:900;font-family:system-ui,-apple-system,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none;}
+.hs-pin:hover .hs-pin-bg,.hs-pin.is-active .hs-pin-bg{fill:#C8A23E;stroke:#fff;}
+.hs-pin:hover .hs-pin-num,.hs-pin.is-active .hs-pin-num{fill:#1B3A5C;}
+.hs-card-overlay{position:absolute;inset:0;border-radius:16px;background:rgba(11,27,65,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 28px;gap:8px;opacity:0;pointer-events:none;transition:opacity .22s;z-index:10;cursor:pointer;}
+.hs-card-overlay.open{opacity:1;pointer-events:auto;}
+.task-yn-overlay{position:absolute;inset:0;border-radius:16px;background:rgba(11,27,65,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 28px;gap:14px;opacity:0;pointer-events:none;transition:opacity .22s;z-index:12;user-select:none;touch-action:none;will-change:transform;cursor:grab;}
+.task-yn-overlay.open{opacity:1;pointer-events:auto;}
+.yn-q{font-size:clamp(13px,3.8vw,19px);line-height:1.5;text-align:center;color:#fff;font-weight:700;}
+.yn-hint{font-size:clamp(9px,2.5vw,12px);opacity:.32;text-align:center;color:#fff;}
+.yn-side-label{position:absolute;top:50%;transform:translateY(-50%);font-size:clamp(12px,3.5vw,18px);font-weight:900;opacity:0;pointer-events:none;}
+.yn-side-label.yes{right:14px;color:#4caf50;}
+.yn-side-label.no{left:14px;color:#e53935;}
+.yn-result-icon{font-size:clamp(36px,11vw,60px);line-height:1.1;}
+.yn-result-icon.ok{color:#4caf50;}
+.yn-result-icon.bad{color:#e53935;}
+.yn-result-exp{font-size:clamp(10px,2.8vw,13px);line-height:1.6;text-align:center;opacity:.92;color:#fff;font-weight:400;}
+.yn-next-btn{margin-top:4px;padding:10px 28px;background:var(--gold);color:var(--navy);font-weight:900;font-size:clamp(12px,3vw,15px);border:none;border-radius:10px;cursor:pointer;}
+.hs-ov-num{width:12%;aspect-ratio:1/1;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:clamp(11px,3.5vw,20px);font-weight:900;flex-shrink:0;}
+.hs-ov-label{font-size:clamp(14px,4.5vw,22px);font-weight:900;color:#fff;text-align:center;}
+.hs-ov-cardtext{font-size:clamp(10px,3vw,15px);color:var(--gold);opacity:.85;text-align:center;}
+.hs-ov-detail{font-size:clamp(10px,2.8vw,14px);line-height:1.55;text-align:center;opacity:.9;font-weight:400;color:#fff;}
+.hs-ov-hint{font-size:clamp(9px,2.5vw,12px);opacity:.35;margin-top:4px;}
+.back-audio-btn{position:absolute;right:12px;bottom:12px;z-index:6;width:44px;height:44px;border:none;border-radius:50%;background:rgba(27,58,92,.88);color:var(--gold);font-size:20px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);border:2px solid rgba(200,162,62,.55);}
+.back-audio-btn:active{transform:scale(.94);}
+.back-audio-btn.playing{background:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="sCard">
+  <nav class="nav">
+    <button class="back-btn" onclick="goBack()">&#8592;</button>
+    <div class="nav-title" id="navTitle">...</div>
+    <div class="nav-code" id="navCode">GR-01</div>
+  </nav>
+  <div class="nav-story" id="storyBar" hidden></div>
+  <div class="nav-prog"><div class="nav-prog-fill" id="progFill"></div></div>
+  <div class="flip-outer" id="flipOuter">
+    <div id="cardWrap"><div id="cardSlide"><div class="flip-container" id="flipContainer">
+      <div class="card-flip" id="cardFlip">
+        <div class="card-side front"><img id="faceImg" alt=""></div>
+        <div class="card-side back" id="backSide">
+          <img id="backImg" alt="" hidden>
+          <div id="backHtml"></div>
+          <button type="button" class="back-audio-btn" id="backAudioBtn" hidden title="Озвучить теорию" aria-label="Озвучить теорию">🔊</button>
+        </div>
+      </div>
+      <div class="task-yn-overlay" id="taskYnOverlay"></div>
+    </div></div></div>
+    <div class="card-hint" id="cardHint" onclick="event.stopPropagation()">нажми — переверни карточку</div>
+    <button class="try-btn" id="tryBtn" onclick="event.stopPropagation();showTask()">Попробуй задание!</button>
+  </div>
+</div>
+
+<div class="screen" id="sTask">
+  <nav class="nav">
+    <button class="back-btn" onclick="showCard()">&#8592;</button>
+    <div class="nav-title" id="navTitle2">Задание</div>
+    <div class="nav-code" id="navCode2">GR-01</div>
+  </nav>
+  <div class="task-wrap" id="taskWrap"></div>
+</div>
+
+<div class="screen" id="sResult">
+  <nav class="nav">
+    <button class="back-btn" onclick="showCard()">&#8592;</button>
+    <div class="nav-title">Результат</div>
+  </nav>
+  <div class="result-wrap">
+    <div class="result-icon" id="resultIcon">&#127881;</div>
+    <div class="result-verdict" id="resultVerdict">Правильно!</div>
+    <div class="result-exp" id="resultExp"></div>
+    <div class="result-btns">
+      <button class="btn primary" id="resultNextBtn" onclick="goNext()">Следующая карта &#8594;</button>
+      <button class="btn" onclick="goBack()">&#8592; Назад</button>
+    </div>
+  </div>
+</div>
+
+  <script src="lang.js"></script>
+  <script src="auth.js"></script>
+  <script src="audio-player.js"></script>
+  <script src="deck-loader.js"></script>
+  <script src="space.js"></script>
+  <script src="layer/card-back-layer.js"></script>
+  <script src="card-view.js?v=20260710-hs-pins"></script>
+<script src="tasks/yesno.js"></script>
+<script src="tasks/sim-order.js"></script>
+<script src="tasks/sim-match.js"></script>
+<script src="play.js"></script>
+</body>
+</html>

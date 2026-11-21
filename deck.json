@@ -1,0 +1,32 @@
+{
+  "slug": "drevnyaya-greciya",
+  "series": "GR",
+  "title": "Древняя Греция",
+  "titleEn": "Ancient Greece",
+  "age": "6-13",
+  "cards": 25,
+  "engine": "space",
+  "assets": {
+    "web": "assets/web",
+    "space": "assets/space",
+    "quest": "assets/quest",
+    "audio": "assets/audio",
+    "cards": "assets/cards"
+  },
+  "locales": {
+    "ru": {
+      "web": "assets/web",
+      "cardsData": "cards-data.js",
+      "cardsBack": "cards-back.js"
+    },
+    "en": {
+      "web": "assets/web/en",
+      "cardsData": "cards-data.en.js",
+      "cardsBack": "cards-back.en.js"
+    }
+  },
+  "progressKey": "drevnyaya_greciya_prog",
+  "version": "1.0.0",
+  "status": "ready",
+  "entry": { "app": "index.html" }
+}

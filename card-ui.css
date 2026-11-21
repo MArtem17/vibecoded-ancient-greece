@@ -1,0 +1,592 @@
+/* Учебная карточка GR — 820×1240 viewBox, текст поверх иллюстрации */
+.gr-card {
+  --navy: #1b3a5c;
+  --navy-deep: #0f2347;
+  --gold: #c8a23e;
+  --ribbon: #8c2d2d;
+  --white: #fff;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  background: linear-gradient(180deg, #0f2347 0%, var(--navy) 55%, #0f2347 100%);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.gr-card * { box-sizing: border-box; }
+
+.gr-card__frame {
+  position: absolute;
+  inset: 0.6% 0.9%;
+  border: 3px solid var(--gold);
+  pointer-events: none;
+  border-radius: 2px;
+}
+.gr-card__frame::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 2px solid var(--gold);
+  opacity: 0.55;
+}
+.gr-card__frame::after {
+  content: "";
+  position: absolute;
+  inset: 11px;
+  border: 1px solid var(--gold);
+  opacity: 0.35;
+}
+
+/* --- header 0–8% --- */
+.gr-card__header {
+  position: absolute;
+  left: 4.4%;
+  right: 4.4%;
+  top: 0.5%;
+  height: 7.3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--navy);
+  border: 1px solid var(--gold);
+  padding: 0 12px;
+  font-size: clamp(7px, 2.2vw, 11px);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+.gr-card__header-mid { opacity: 0.95; font-weight: 800; }
+.gr-card__header-num { color: var(--white); font-weight: 800; }
+
+/* --- title block 8–18% --- */
+.gr-card__title-zone {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8.1%;
+  height: 12.9%;
+  text-align: center;
+  padding: 4px 16px 0;
+}
+.gr-card__ribbon {
+  display: inline-block;
+  background: var(--ribbon);
+  border: 1px solid var(--gold);
+  color: var(--white);
+  font-size: clamp(6px, 1.8vw, 10px);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 18px;
+  margin-bottom: 6px;
+}
+.gr-card__title {
+  margin: 0;
+  font-size: clamp(11px, 4.2vw, 22px);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.gr-card__subtitle {
+  margin: 4px 0 0;
+  font-size: clamp(6px, 2vw, 11px);
+  color: var(--gold);
+  opacity: 0.9;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* --- illustration 17.7–72.6% --- */
+.gr-card__ill {
+  position: absolute;
+  left: 4.4%;
+  right: 4.4%;
+  top: 17.7%;
+  height: 54.8%;
+  border: 2px solid var(--gold);
+  overflow: hidden;
+  background: var(--navy);
+}
+.gr-card__ill img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- stats bar 72.6–81.5% --- */
+.gr-card__stats {
+  position: absolute;
+  left: 4.4%;
+  right: 4.4%;
+  top: 72.6%;
+  height: 9.7%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--navy);
+  border: 2px solid var(--gold);
+  border-top: none;
+}
+.gr-card__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px;
+  text-align: center;
+  border-right: 1px solid var(--gold);
+}
+.gr-card__stat:last-child { border-right: none; }
+.gr-card__stat-num {
+  color: var(--gold);
+  font-size: clamp(7px, 2vw, 11px);
+  font-weight: 900;
+  line-height: 1;
+}
+.gr-card__stat-label {
+  font-size: clamp(5px, 1.5vw, 9px);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-top: 2px;
+  opacity: 0.95;
+}
+
+/* --- type badge + footer --- */
+.gr-card__badge {
+  position: absolute;
+  right: 5%;
+  top: 80.6%;
+  padding: 4px 12px;
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  background: var(--navy);
+  color: var(--gold);
+  font-size: clamp(6px, 1.7vw, 10px);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.gr-card__footer {
+  position: absolute;
+  left: 4.4%;
+  right: 4.4%;
+  bottom: 0.8%;
+  height: 8.5%;
+  border-top: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(5px, 1.5vw, 9px);
+  color: var(--gold);
+  text-align: center;
+  padding: 0 8px;
+  line-height: 1.3;
+}
+
+/* --- BACK: study content --- */
+.gr-card--back .gr-card__study {
+  position: absolute;
+  left: 4.4%;
+  right: 4.4%;
+  top: 8.5%;
+  bottom: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+.gr-card__study-lead {
+  background: rgba(140, 45, 45, 0.35);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: clamp(7px, 2.1vw, 12px);
+  line-height: 1.45;
+  font-weight: 600;
+}
+.gr-card__study-lead strong {
+  display: block;
+  color: var(--gold);
+  font-size: clamp(6px, 1.8vw, 10px);
+  margin-bottom: 4px;
+  letter-spacing: 0.06em;
+}
+.gr-card__study-facts {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.gr-card__fact {
+  font-size: clamp(6px, 1.85vw, 11px);
+  line-height: 1.4;
+  font-weight: 600;
+  padding-left: 10px;
+  position: relative;
+}
+.gr-card__fact::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+.gr-card__keywords {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+.gr-card__kw {
+  background: rgba(27, 58, 92, 0.85);
+  border: 1px solid rgba(200, 162, 62, 0.45);
+  border-radius: 5px;
+  padding: 4px 6px;
+  font-size: clamp(5px, 1.55vw, 9px);
+  line-height: 1.25;
+}
+.gr-card__kw strong { color: var(--gold); display: block; font-size: clamp(5px, 1.5vw, 9px); }
+.gr-card__fun {
+  font-size: clamp(5px, 1.55vw, 9px);
+  line-height: 1.35;
+  opacity: 0.88;
+  font-weight: 600;
+  font-style: italic;
+  border-top: 1px dashed rgba(200, 162, 62, 0.35);
+  padding-top: 5px;
+}
+.gr-card__fun strong { color: var(--gold); font-style: normal; }
+
+/* --- BACK: scroll + manuscript (GR-01+) --- */
+.gr-card--back-scroll {
+  background: #0b1b41;
+  color: #2a1c0a;
+  --ink: #2a1c0a;
+  --ink-soft: #4a3520;
+  --parchment-label: #6b3f22;
+  --parchment-accent: #8c4a1f;
+}
+
+.gr-card__scroll-bg {
+  position: absolute;
+  left: 2.2%;
+  right: 2.2%;
+  top: 7.2%;
+  bottom: 8.8%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gr-card__header--scroll {
+  z-index: 2;
+  background: rgba(11, 27, 65, 0.92);
+}
+
+.gr-card__scroll-title {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 8.8%;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+
+.gr-card__scroll-ribbon {
+  display: inline-block;
+  background: rgba(112, 35, 31, 0.88);
+  border: 1px solid rgba(107, 63, 34, 0.55);
+  color: #f8edd4;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(5px, 1.55vw, 9px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 2px 12px;
+  margin-bottom: 3px;
+}
+
+.gr-card__scroll-heading {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(10px, 3.4vw, 18px);
+  font-weight: 700;
+  color: var(--parchment-accent);
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(255, 248, 230, 0.35);
+}
+
+.gr-card__scroll-body {
+  position: absolute;
+  left: 11.5%;
+  right: 11.5%;
+  top: 15.5%;
+  bottom: 12.5%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 0.7vw, 5px);
+  overflow: hidden;
+  font-family: "Neucha", "Segoe Print", "Comic Sans MS", cursive;
+  font-size: clamp(5.8px, 1.78vw, 10.5px);
+  line-height: 1.32;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.gr-card__scroll-label {
+  display: block;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(5.5px, 1.65vw, 10px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--parchment-label);
+  margin-bottom: 2px;
+}
+
+.gr-card__scroll-think {
+  padding: 5px 7px 6px;
+  border-bottom: 1px dashed rgba(107, 63, 34, 0.35);
+  color: var(--ink-soft);
+  font-size: clamp(6px, 1.85vw, 11px);
+}
+
+.gr-card__scroll-lead {
+  padding: 2px 2px 4px;
+  font-size: clamp(6.5px, 2.05vw, 12px);
+  font-weight: 400;
+}
+
+.gr-card__scroll-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.gr-card__scroll-fact {
+  position: relative;
+  padding-left: 11px;
+  font-size: clamp(6px, 1.9vw, 11px);
+  line-height: 1.35;
+}
+
+.gr-card__scroll-fact::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--parchment-accent);
+  font-weight: 700;
+}
+
+.gr-card__scroll-kws {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+
+.gr-card__scroll-kw {
+  background: rgba(255, 248, 230, 0.42);
+  border: 1px solid rgba(107, 63, 34, 0.28);
+  border-radius: 5px;
+  padding: 3px 5px;
+  line-height: 1.2;
+}
+
+.gr-card__scroll-kw-term {
+  display: block;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(5.5px, 1.7vw, 10px);
+  font-weight: 700;
+  color: var(--parchment-accent);
+  letter-spacing: 0.04em;
+}
+
+.gr-card__scroll-kw-hint {
+  display: block;
+  font-size: clamp(5px, 1.55vw, 9px);
+  color: var(--ink-soft);
+}
+
+.gr-card__scroll-fun {
+  border-top: 1px dashed rgba(107, 63, 34, 0.3);
+  padding-top: 3px;
+  font-size: clamp(5px, 1.55vw, 9px);
+  font-style: italic;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+
+.gr-card__badge--scroll {
+  z-index: 2;
+  background: rgba(11, 27, 65, 0.9);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-family: system-ui, sans-serif;
+}
+
+.gr-card__footer--scroll {
+  z-index: 2;
+  background: rgba(11, 27, 65, 0.88);
+  color: var(--gold);
+  font-family: system-ui, sans-serif;
+  font-size: clamp(4.5px, 1.35vw, 8px);
+}
+
+/* --- GR-01: свиток на всю карточку, padding 50px @ 820×1230 --- */
+.gr-card--scroll-v2 {
+  background: transparent;
+  color: #2a1c0a;
+  --ink: #2a1c0a;
+  --ink-soft: #4a3520;
+  --parchment-label: #6b3f22;
+  --parchment-accent: #8c4a1f;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-bg {
+  inset: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-pad {
+  position: absolute;
+  top: 16.26%;
+  right: 12.2%;
+  bottom: 12.2%;
+  left: 12.2%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(11px, 1.7vw, 14px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--parchment-label);
+  margin-bottom: clamp(6px, 1.2vw, 12px);
+  flex-shrink: 0;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-title-inline {
+  text-align: center;
+  flex-shrink: 0;
+  margin-bottom: clamp(8px, 1.5vw, 14px);
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-ribbon {
+  font-size: clamp(11px, 1.7vw, 14px);
+  padding: 3px 16px;
+  margin-bottom: 6px;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-heading {
+  font-size: clamp(26px, 5.1vw, 42px);
+  margin: 0;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-body-v2 {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.4vw, 12px);
+  overflow: hidden;
+  font-family: "Neucha", "Segoe Print", cursive;
+  font-size: clamp(16px, 3.17vw, 26px);
+  line-height: 1.34;
+  color: var(--ink);
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-label {
+  font-size: clamp(11px, 1.95vw, 16px);
+  margin-bottom: 4px;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-think {
+  padding-bottom: clamp(6px, 1.2vw, 10px);
+  border-bottom: 1px dashed rgba(107, 63, 34, 0.35);
+  color: var(--ink-soft);
+  font-size: clamp(14px, 2.68vw, 22px);
+  flex-shrink: 0;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-lead {
+  flex-shrink: 0;
+  font-size: clamp(16px, 3.17vw, 26px);
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-facts {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(5px, 1vw, 8px);
+  overflow: hidden;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-fact {
+  padding-left: 18px;
+  font-size: clamp(15px, 3.05vw, 25px);
+  line-height: 1.32;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-kws {
+  gap: clamp(5px, 1vw, 8px);
+  flex-shrink: 0;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-kw {
+  padding: clamp(5px, 1vw, 8px) clamp(6px, 1.2vw, 10px);
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-kw-term {
+  font-size: clamp(13px, 2.44vw, 20px);
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-kw-hint {
+  font-size: clamp(12px, 2.2vw, 18px);
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-fun {
+  font-size: clamp(13px, 2.44vw, 20px);
+  padding-top: clamp(5px, 1vw, 8px);
+  flex-shrink: 0;
+}
+
+.gr-card--scroll-v2 .gr-card__scroll-foot {
+  flex-shrink: 0;
+  margin-top: clamp(6px, 1.2vw, 10px);
+  text-align: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(10px, 1.6vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--parchment-label);
+}
+
+/* Gallery mini preview */
+.ico-frame .gr-card { font-size: 4px; }
+.ico-frame .gr-card__header { font-size: 4px; }
+.ico-frame .gr-card__title { font-size: 5px; }

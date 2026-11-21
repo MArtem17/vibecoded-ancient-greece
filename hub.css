@@ -1,0 +1,1030 @@
+/* Hub: карта, иконостас, модальная карточка */
+
+.map-panel {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 12px 16px;
+  width: 100%;
+}
+
+#panel-map .map-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: none;
+  padding: 0;
+}
+
+.map-hero {
+  text-align: center;
+  padding: 14px 16px 0;
+  max-width: 640px;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+#panel-map .map-hero {
+  max-width: none;
+  padding: 10px 14px 8px;
+}
+
+.map-hero h2 {
+  margin: 0 0 6px;
+  font-size: clamp(18px, 4vw, 24px);
+  color: var(--primary);
+}
+
+.map-hero p,
+.map-hero-desktop,
+.map-hero-hint {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.72;
+  line-height: 1.45;
+}
+
+.map-hero-hint {
+  display: none;
+}
+
+/* --- область карты --- */
+.map-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+#panel-map .map-stage {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.map-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  overflow: visible;
+}
+
+.map-links__lines line,
+.map-links__lines path {
+  stroke: rgba(200, 162, 62, 0.68);
+  stroke-width: 1.6;
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+
+.map-card-float.is-dragging ~ .map-links__lines line,
+.map-card-float.is-dragging + .map-links__lines line {
+  stroke: rgba(200, 162, 62, 0.95);
+  stroke-width: 2;
+}
+
+.map-cards-rail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  overflow: visible;
+}
+
+.map-card-float {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+  z-index: 1;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.map-card-float.is-dragging {
+  cursor: grabbing;
+  z-index: 20;
+}
+
+.map-card-float.is-dragging .pin-thumb {
+  transform: scale(1.5);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 0 2px var(--accent);
+}
+
+.map-card-float:hover,
+.map-card-float:focus-visible,
+.map-card-float.is-peek {
+  z-index: 8;
+}
+
+.map-card-float .pin-thumb {
+  width: 34px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.map-card-float:hover .pin-thumb,
+.map-card-float:focus-visible .pin-thumb,
+.map-card-float.is-peek .pin-thumb {
+  transform: scale(1.85);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 0 2px var(--accent);
+}
+
+.map-scroll {
+  position: relative;
+  width: 100%;
+}
+
+#panel-map .map-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  scroll-behavior: smooth;
+  position: relative;
+  z-index: 1;
+}
+
+#spaceWrap {
+  position: relative;
+  margin-top: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(160deg, #1b3a5c 0%, #2d5a87 40%, #4a7c59 70%, #c8a23e 100%);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+}
+
+#panel-map #spaceWrap {
+  margin-top: 0;
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 12px;
+}
+
+#spaceWrap .space-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+#spaceWrap.space-fallback .space-inner::before {
+  content: "Карта Греции · положите main.webp (ru) и en/main.webp в assets/space/";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  padding: 20px;
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.space-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pins-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* --- точки на карте --- */
+.pin-dot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.pin-dot:hover,
+.pin-dot:focus-visible {
+  transform: translate(-50%, -50%) scale(1.35);
+  box-shadow: 0 0 0 3px rgba(200, 162, 62, 0.45);
+}
+
+.pin-dot.pin-passed {
+  background: #2d6a4f;
+}
+
+.pin-dot.pin-studied {
+  background: #c8a23e;
+  box-shadow: 0 0 0 2px rgba(200, 162, 62, 0.5);
+}
+
+.pin-dot__label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 3px);
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* --- legacy pin preview (modal / fallback) --- */
+.pin-preview {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1;
+  transition: z-index 0s;
+}
+
+.pin-preview:hover,
+.pin-preview:focus-visible,
+.pin-preview.is-peek {
+  z-index: 30;
+}
+
+.pin-thumb {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  background: var(--primary);
+  transition: transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.28s, z-index 0s;
+  transform-origin: center bottom;
+}
+
+.pin-preview:hover .pin-thumb,
+.pin-preview:focus-visible .pin-thumb,
+.pin-preview.is-peek .pin-thumb,
+.pin-preview:active .pin-thumb {
+  z-index: 3;
+  transform: scale(2.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 0 2px var(--accent);
+}
+
+.pin-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pin-badge {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  z-index: 2;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 20px;
+  text-align: center;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.pin-preview.pin-passed .pin-badge {
+  background: #2d6a4f;
+}
+
+.pin-preview.pin-studied .pin-thumb {
+  border-color: var(--accent);
+}
+
+.pin-title {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 4px);
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.pin-preview:hover .pin-title,
+.pin-preview:focus-visible .pin-title,
+.pin-preview.is-peek .pin-title {
+  opacity: 1;
+}
+
+/* --- кнопки под картой (не поверх) --- */
+.map-cta {
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 14px 12px 16px;
+  background: var(--bg, #f0f2f5);
+  flex-shrink: 0;
+}
+
+#panel-map .map-cta {
+  padding: 12px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(27, 58, 92, 0.08);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.map-cta .cta-btn {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: clamp(12px, 2.8vw, 15px);
+  padding: 14px 16px;
+  border-radius: 14px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  flex: 1 1 140px;
+  max-width: 320px;
+}
+
+.map-cta .cta-btn:active {
+  transform: scale(0.97);
+}
+
+.cta-gallery {
+  background: linear-gradient(180deg, #f0d78a 0%, #c8a23e 45%, #9a7420 100%);
+  color: #1b3a5c;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.cta-quest {
+  background: linear-gradient(180deg, #2d5a87 0%, #1b3a5c 55%, #0f2347 100%);
+  color: #f0d78a;
+  border: 2px solid var(--accent) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* --- модальная карточка --- */
+.card-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.card-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 18, 38, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.card-modal__stage {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 400px);
+  transform: scale(0.35);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.34, 1.35, 0.64, 1), opacity 0.35s;
+}
+
+.card-modal__carousel {
+  perspective: 1500px;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  min-height: 280px;
+  position: relative;
+  z-index: 2;
+  overflow: visible;
+}
+
+.card-modal.is-open .card-modal__stage {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.card-modal.is-closing .card-modal__stage {
+  transform: scale(0.4);
+  opacity: 0;
+  transition-duration: 0.28s;
+}
+
+.card-modal.is-carousel-anim .card-modal__carousel {
+  overflow: hidden;
+}
+
+.card-modal__carousel-pivot {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+}
+
+.card-modal__flip-wrap {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition:
+    transform 0.64s cubic-bezier(0.34, 0.92, 0.36, 1),
+    opacity 0.64s ease;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.card-modal__flip-wrap.is-active {
+  transform: rotateY(0deg) translateZ(0) scale(1);
+  opacity: 1;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.card-modal__flip-wrap--ghost {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.card-modal__flip-wrap.is-arc-center {
+  transform: rotateY(0deg) translateZ(0) scale(1);
+  opacity: 1;
+  z-index: 3;
+}
+
+.card-modal__flip-wrap.is-arc-exit-left {
+  transform: rotateY(-88deg) translateZ(-200px) scale(0.68);
+  opacity: 0;
+  z-index: 1;
+}
+
+.card-modal__flip-wrap.is-arc-exit-right {
+  transform: rotateY(88deg) translateZ(-200px) scale(0.68);
+  opacity: 0;
+  z-index: 1;
+}
+
+.card-modal__flip-wrap.is-arc-enter-right {
+  transform: rotateY(88deg) translateZ(-200px) scale(0.68);
+  opacity: 0;
+  z-index: 2;
+}
+
+.card-modal__flip-wrap.is-arc-enter-left {
+  transform: rotateY(-88deg) translateZ(-200px) scale(0.68);
+  opacity: 0;
+  z-index: 2;
+}
+
+.card-modal.is-carousel-anim .card-modal__flip {
+  transition: transform 0.64s cubic-bezier(0.34, 0.92, 0.36, 1) !important;
+}
+
+.card-modal__flip-wrap.is-arc-enter-right .card-modal__flip,
+.card-modal__flip-wrap.is-arc-exit-left .card-modal__flip {
+  transform: rotateY(-88deg);
+}
+
+.card-modal__flip-wrap.is-arc-enter-left .card-modal__flip,
+.card-modal__flip-wrap.is-arc-exit-right .card-modal__flip {
+  transform: rotateY(88deg);
+}
+
+.card-modal__flip-wrap.is-arc-center .card-modal__flip,
+.card-modal__flip-wrap.is-active .card-modal__flip {
+  transform: rotateY(0deg);
+}
+
+.card-modal__flip.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-modal__flip-wrap.is-active .card-modal__flip.is-flipped,
+.card-modal__flip-wrap.is-arc-center .card-modal__flip.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-modal__flip {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.card-modal__side {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(200, 162, 62, 0.45);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+}
+
+.card-modal__side--back {
+  transform: rotateY(180deg);
+}
+
+.card-modal__side img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+  background: var(--primary);
+}
+
+#modalFace,
+#modalBackFace {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+  background: var(--primary);
+}
+
+.card-modal__cap {
+  margin: 12px 0 0;
+  text-align: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-modal__hint {
+  margin: 8px 0 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.card-modal__play {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--primary);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.card-modal__play:active {
+  transform: scale(0.98);
+}
+
+.gallery-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 960px;
+  margin: 12px auto 0;
+  padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+  box-sizing: border-box;
+}
+
+.gallery-back button {
+  border: none;
+  background: #fff;
+  color: var(--primary);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* --- полноэкранная карта: UI поверх --- */
+body.hub-map-mode {
+  overflow: hidden;
+  height: 100dvh;
+  background: #0f1a2e;
+}
+
+body.hub-map-mode > footer {
+  display: none;
+}
+
+body.hub-map-mode header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 18, 38, 0.94) 0%,
+    rgba(8, 18, 38, 0.62) 58%,
+    transparent 100%
+  );
+  border-bottom: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-top: max(8px, env(safe-area-inset-top));
+  padding-bottom: 2px;
+}
+
+body.hub-map-mode header h1 {
+  color: #fff;
+  font-size: clamp(15px, 4vw, 18px);
+}
+
+body.hub-map-mode header .sub {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+}
+
+body.hub-map-mode header .icon {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+body.hub-map-mode .head-row {
+  padding-bottom: 6px;
+}
+
+body.hub-map-mode .lang-btn {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 10px;
+}
+
+body.hub-map-mode .lang-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--primary);
+}
+
+body.hub-map-mode .tabs {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-top: 6px;
+  gap: 6px;
+}
+
+body.hub-map-mode .tab {
+  color: #fff;
+  opacity: 0.62;
+  border-bottom: none;
+  border-radius: 10px;
+  padding: 8px 6px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+body.hub-map-mode .tab.active {
+  opacity: 1;
+  background: rgba(200, 162, 62, 0.32);
+  border: 1px solid rgba(200, 162, 62, 0.55);
+  color: #f0d78a;
+}
+
+body.hub-map-mode #panel-map.panel.active {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  padding: 0;
+  flex: none;
+  min-height: 0;
+}
+
+body.hub-map-mode .map-panel {
+  position: absolute;
+  inset: 0;
+  max-width: none;
+  padding: 0;
+  display: block;
+}
+
+body.hub-map-mode .map-hero {
+  display: none;
+}
+
+body.hub-map-mode .map-stage {
+  position: absolute;
+  inset: 0;
+}
+
+body.hub-map-mode .map-scroll {
+  position: absolute;
+  inset: 0;
+  flex: none;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  z-index: 1;
+}
+
+body.hub-map-mode #spaceWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  min-height: 100%;
+  width: max(100vw, calc(100dvh * 16 / 9), 680px);
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  aspect-ratio: auto;
+}
+
+body.hub-map-mode .map-scroll::before,
+body.hub-map-mode .map-scroll::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  z-index: 12;
+  pointer-events: none;
+}
+
+body.hub-map-mode .map-scroll::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(8, 18, 38, 0.4), transparent);
+}
+
+body.hub-map-mode .map-scroll::after {
+  right: 0;
+  background: linear-gradient(-90deg, rgba(8, 18, 38, 0.4), transparent);
+}
+
+body.hub-map-mode .map-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: linear-gradient(
+    0deg,
+    rgba(8, 18, 38, 0.95) 0%,
+    rgba(8, 18, 38, 0.7) 52%,
+    transparent 100%
+  );
+  border: none;
+  box-shadow: none;
+  padding: 10px 12px 8px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  gap: 8px;
+}
+
+body.hub-map-mode .map-cta .cta-btn {
+  flex: 1;
+  max-width: none;
+  padding: 12px 10px;
+  font-size: clamp(11px, 2.8vw, 14px);
+  border-radius: 12px;
+}
+
+body.hub-map-mode .map-cta-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+body.hub-map-mode .map-float-hint {
+  display: block;
+  width: 100%;
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.02em;
+}
+
+.map-float-hint {
+  display: none;
+}
+
+/* --- мобильные устройства --- */
+@media (max-width: 767px) {
+  body.hub-map-mode .head-row {
+    gap: 8px;
+  }
+
+  body.hub-map-mode #spaceWrap {
+    width: max(175vw, calc(100dvh * 16 / 9), 640px);
+  }
+
+  .pin-thumb {
+    width: 40px;
+  }
+
+  .map-card-float .pin-thumb {
+    width: 30px;
+  }
+
+  .pin-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .pin-preview.is-peek .pin-thumb,
+  .pin-preview:active .pin-thumb {
+    transform: scale(2.1);
+  }
+
+  .card-modal__stage {
+    width: min(92vw, 400px);
+  }
+}
+
+/* --- планшет / десктоп: карта в блоке (не map-mode) --- */
+@media (min-width: 768px) {
+  .map-panel {
+    padding: 0 12px 24px;
+  }
+
+  #panel-map .map-panel {
+    padding: 0 12px 0;
+  }
+
+  #panel-map .map-scroll {
+    overflow: visible;
+  }
+
+  #panel-map #spaceWrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    margin-top: 12px;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  }
+
+  .pin-preview:hover .pin-thumb,
+  .pin-preview:focus-visible .pin-thumb {
+    transform: scale(2.6);
+  }
+
+  body.hub-map-mode #spaceWrap {
+    width: max(100vw, calc(100dvh * 16 / 9), 960px);
+  }
+
+  body.hub-map-mode .map-cta {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  body.hub-map-mode .map-cta .cta-btn {
+    max-width: 280px;
+  }
+
+  body.hub-map-mode header {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 959px) {
+  #panel-map #spaceWrap {
+    width: max(100%, 130vw);
+  }
+
+  #panel-map .map-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* --- тёмная тема: читаемый текст вместо тёмно-синего на тёмном фоне --- */
+:root[data-theme="dark"] header h1,
+:root[data-theme="dark"] .tab,
+:root[data-theme="dark"] .map-hero h2,
+:root[data-theme="dark"] .ico-title,
+:root[data-theme="dark"] .ico-type,
+:root[data-theme="dark"] .gear-name,
+:root[data-theme="dark"] .quest-act-head h3,
+:root[data-theme="dark"] .quest-ch-body strong,
+:root[data-theme="dark"] .quest-gear-tag,
+:root[data-theme="dark"] .settings-btn button:not(.gear),
+:root[data-theme="dark"] .settings-pill,
+:root[data-theme="dark"] .gallery-back button {
+  color: var(--primary-text, var(--ink));
+}
+
+:root[data-theme="dark"] .tab.active {
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .settings-btn button:not(.gear),
+:root[data-theme="dark"] .settings-pill {
+  border-color: var(--primary-border, var(--border));
+}
+
+:root[data-theme="dark"] .ico-tile,
+:root[data-theme="dark"] .quest-chapter,
+:root[data-theme="dark"] .quest-act-head,
+:root[data-theme="dark"] .gear-slot {
+  background: var(--surface-2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .gallery-back button {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+:root[data-theme="dark"] .quest-gear-tag.got {
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .quest-chapter,
+:root[data-theme="dark"] .quest-act-head,
+:root[data-theme="dark"] .gear-slot {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .quest-ch-scene,
+:root[data-theme="dark"] .quest-act-head p,
+:root[data-theme="dark"] .intro,
+:root[data-theme="dark"] #questIntro {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] #panel-map .map-cta {
+  border-top-color: var(--border);
+  box-shadow: none;
+}

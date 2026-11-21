@@ -1,0 +1,47 @@
+{
+  "version": "20260709-tts-prototype",
+  "voices": {
+    "study": "ru-RU-DmitryNeural",
+    "narrator": "ru-RU-DmitryNeural",
+    "sandra": "ru-RU-SvetlanaNeural",
+    "roborik": "ru-RU-DmitryNeural"
+  },
+  "prototype": true,
+  "cards": {
+    "01": {
+      "intro": "cards/01/intro.mp3",
+      "facts": "cards/01/facts.mp3",
+      "fun": "cards/01/fun.mp3"
+    },
+    "02": {
+      "intro": "cards/02/intro.mp3",
+      "facts": "cards/02/facts.mp3",
+      "fun": "cards/02/fun.mp3"
+    },
+    "03": {
+      "intro": "cards/03/intro.mp3",
+      "facts": "cards/03/facts.mp3",
+      "fun": "cards/03/fun.mp3"
+    }
+  },
+  "quest": {
+    "01": [
+      {
+        "who": "narrator",
+        "file": "quest/01/00-narrator.mp3"
+      },
+      {
+        "who": "sandra",
+        "file": "quest/01/01-sandra.mp3"
+      },
+      {
+        "who": "roborik",
+        "file": "quest/01/02-roborik.mp3"
+      },
+      {
+        "who": "sandra",
+        "file": "quest/01/03-sandra.mp3"
+      }
+    ]
+  }
+}

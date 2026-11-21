@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Личный кабинет · Древняя Греция</title>
+  <meta name="theme-color" content="#1B3A5C">
+  <link rel="stylesheet" href="auth-ui.css">
+  <script src="lang.js"></script>
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <h1 id="cabinetTitle">Личный кабинет</h1>
+      <p id="cabinetSub">Ваш прогресс в колоде</p>
+    </div>
+
+    <div class="cabinet-user">
+      <div class="cabinet-user__avatar" id="userAvatar">?</div>
+      <div>
+        <div class="cabinet-user__name" id="userName">—</div>
+      </div>
+    </div>
+
+    <div class="cabinet-stats" id="cabinetStats"></div>
+
+    <div class="cabinet-section">
+      <h2 id="progressSectionTitle">Прогресс</h2>
+      <div class="cabinet-actions">
+        <button type="button" class="cabinet-btn cabinet-btn--danger" id="btnReset">Сбросить все прохождения</button>
+        <button type="button" class="cabinet-btn cabinet-btn--primary" id="btnToApp">Вернуться в приложение</button>
+      </div>
+    </div>
+  </div>
+
+  <a class="auth-back" id="backLink" href="index.html">← На карту</a>
+
+  <script src="auth.js"></script>
+  <script src="cabinet.js"></script>
+</body>
+</html>
